@@ -1,0 +1,19 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.root {
+  position: relative;
+  .line {
+    position: relative;
+    display: flex;
+  }
+  button {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    background-color: #f2f2f2;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+  }
+}
