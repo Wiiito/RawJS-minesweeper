@@ -21,6 +21,14 @@ while (bombsLeft < width * height * difficulty * 0.01) {
 
 const root = document.getElementsByClassName('root')[0]
 
+window.addEventListener(
+  'contextmenu',
+  function (e) {
+    e.preventDefault()
+  },
+  false
+)
+
 for (i = 0; i < height; i++) {
   //Render the display
   const line = document.createElement('div')
@@ -31,8 +39,23 @@ for (i = 0; i < height; i++) {
     const button = document.createElement('button') //Creating the checkbox
     button.id = `Button${id}`
     button.addEventListener('click', () => handleClick(id))
+    button.addEventListener('contextmenu', () => guessBomb(id))
 
     line.appendChild(button) //Rendering the elements
+  }
+}
+
+function guessBomb(id) {
+  if (!document.getElementById(`Button${id}`).style.backgroundColor) {
+    display[id] = 1
+    return (document.getElementById(`Button${id}`).style.backgroundColor =
+      'rgba(255,0,0,0.6)')
+  }
+  display[id] = 0
+  document.getElementById(`Button${id}`).style.backgroundColor = ''
+  const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+  if (equals(display, bombs)) {
+    return console.log('Won')
   }
 }
 
