@@ -1,5 +1,5 @@
-var width = 10 //Default 10, get from the user
-var height = 10 //Default 10, get from the user
+var width = 50 //Default 10, get from the user
+var height = 24 //Default 10, get from the user
 
 var difficulty = 15 //(10-40)% of bombs
 
@@ -43,53 +43,46 @@ function handleClick(id) {
   } else {
     /*document.getElementById(`Button${id}`).style.backgroundColor =
       'rgba(0,0,0,0.4)'*/
-    document.getElementById(`Button${id}`).innerHTML = getNearBombs(id)
     expandClick(id)
   }
 }
 
 function expandClick(id) {
-  for (i = id; getNearBombs(i) <= 0 && getCloseHouses(i).includes(i + 1); i++) {
-    //Expand Right
-    document.getElementById(`Button${i + 1}`).innerHTML = getNearBombs(i + 1)
-    for (j = i; getNearBombs(j) <= 0 && j >= width; j = j - width) {
-      //On right, expand top
-      document.getElementById(`Button${j - width}`).innerHTML = getNearBombs(
-        j - width
-      )
-    }
-    for (
-      j = i;
-      getNearBombs(j) <= 0 && j < display.length - width;
-      j = j + width
-    ) {
-      //On right, expand bottom
-      document.getElementById(`Button${j + width}`).innerHTML = getNearBombs(
-        j + width
-      )
-    }
-  }
+  if (getNearBombs(id) !== 0)
+    return (document.getElementById(`Button${id}`).innerHTML = getNearBombs(id)) //Colore o primeiro botão
+  document.getElementById(`Button${id}`).style.backgroundColor =
+    'rgba(0,0,0,0.4)'
+  if (getNearBombs(id) > 0) return //Volta se a casa clicada não tiver o valor de 0
 
-  for (i = id; getNearBombs(i) <= 0 && getCloseHouses(i).includes(i - 1); i--) {
-    //Expand Left
-    document.getElementById(`Button${i - 1}`).innerHTML = getNearBombs(i - 1)
-    for (j = i; getNearBombs(j) <= 0 && j >= width; j = j - width) {
-      //On left, expand top
-      document.getElementById(`Button${j - width}`).innerHTML = getNearBombs(
-        j - width
-      )
-    }
-    for (
-      j = i;
-      getNearBombs(j) <= 0 && j < display.length - width;
-      j = j + width
-    ) {
-      //On left, expand bottom
-      document.getElementById(`Button${j + width}`).innerHTML = getNearBombs(
-        j + width
-      )
-    }
-  }
+  var noBombsHouses = [id] //Inital value
+  var initialBombsQuantity = noBombsHouses.length //Exit loop condition
+  do {
+    //Spread algorithm
+    initialBombsQuantity = noBombsHouses.length //Stats exit condition
+    noBombsHouses.map(house => {
+      colorHouses(house)
+      //Color every empty house added to [noBombsHouses]
+
+      getCloseHouses(house).map(current => {
+        //If the near house of the current house (house from map()),
+        //has no bomb and it's no already in [noBombsHouses],
+        //will be pushed
+        if (getNearBombs(current) === 0) {
+          if (!noBombsHouses.includes(current))
+            return noBombsHouses.push(current)
+        }
+      })
+    })
+  } while (noBombsHouses.length !== initialBombsQuantity) //Break condition: [noBombsHouses] changed
+}
+
+function colorHouses(id) {
+  getCloseHouses(id).map(house => {
+    if (getNearBombs(house) === 0)
+      return (document.getElementById(`Button${house}`).style.backgroundColor =
+        'rgba(0,0,0,0.4)')
+    document.getElementById(`Button${house}`).innerHTML = getNearBombs(house)
+  })
 }
 
 function isBomb(id) {
@@ -174,3 +167,45 @@ function getNearBombs(id) {
   })
   return count
 }
+
+/*for (i = id; getNearBombs(i) <= 0 && getCloseHouses(i).includes(i + 1); i++) {
+    //Expand Right
+    document.getElementById(`Button${i + 1}`).innerHTML = getNearBombs(i + 1)
+    for (j = i; getNearBombs(j) <= 0 && j >= width; j = j - width) {
+      //On right, expand top
+      document.getElementById(`Button${j - width}`).innerHTML = getNearBombs(
+        j - width
+      )
+    }
+    for (
+      j = i;
+      getNearBombs(j) <= 0 && j < display.length - width;
+      j = j + width
+    ) {
+      //On right, expand bottom
+      document.getElementById(`Button${j + width}`).innerHTML = getNearBombs(
+        j + width
+      )
+    }
+  }
+
+  for (i = id; getNearBombs(i) <= 0 && getCloseHouses(i).includes(i - 1); i--) {
+    //Expand Left
+    document.getElementById(`Button${i - 1}`).innerHTML = getNearBombs(i - 1)
+    for (j = i; getNearBombs(j) <= 0 && j >= width; j = j - width) {
+      //On left, expand top
+      document.getElementById(`Button${j - width}`).innerHTML = getNearBombs(
+        j - width
+      )
+    }
+    for (
+      j = i;
+      getNearBombs(j) <= 0 && j < display.length - width;
+      j = j + width
+    ) {
+      //On left, expand bottom
+      document.getElementById(`Button${j + width}`).innerHTML = getNearBombs(
+        j + width
+      )
+    }
+  }*/
