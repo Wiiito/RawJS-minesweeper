@@ -1,5 +1,5 @@
-var width = 50 //Default 10, get from the user
-var height = 24 //Default 10, get from the user
+var width = 10 //Default 10, get from the user
+var height = 10 //Default 10, get from the user
 
 var difficulty = 15 //(10-40)% of bombs
 
@@ -48,10 +48,11 @@ function handleClick(id) {
 }
 
 function expandClick(id) {
-  if (getNearBombs(id) !== 0)
-    return (document.getElementById(`Button${id}`).innerHTML = getNearBombs(id)) //Colore o primeiro botão
-  document.getElementById(`Button${id}`).style.backgroundColor =
-    'rgba(0,0,0,0.4)'
+  if (getNearBombs(id) !== 0) {
+    numberColor(id)
+    document.getElementById(`Button${id}`).innerHTML = getNearBombs(id) //Colore o primeiro botão
+  }
+
   if (getNearBombs(id) > 0) return //Volta se a casa clicada não tiver o valor de 0
 
   var noBombsHouses = [id] //Inital value
@@ -78,11 +79,44 @@ function expandClick(id) {
 
 function colorHouses(id) {
   getCloseHouses(id).map(house => {
-    if (getNearBombs(house) === 0)
-      return (document.getElementById(`Button${house}`).style.backgroundColor =
-        'rgba(0,0,0,0.4)')
-    document.getElementById(`Button${house}`).innerHTML = getNearBombs(house)
+    numberColor(house)
+    if (getNearBombs(house) !== 0) {
+      document.getElementById(`Button${house}`).innerHTML = getNearBombs(house)
+    }
   })
+}
+
+function numberColor(id) {
+  switch (getNearBombs(id)) {
+    case 1:
+      document.getElementById(`Button${id}`).style.color = '#FF0000'
+      break
+    case 2:
+      document.getElementById(`Button${id}`).style.color = '#FF7F00'
+      break
+    case 3:
+      document.getElementById(`Button${id}`).style.color = '#DDA520'
+      break
+    case 4:
+      document.getElementById(`Button${id}`).style.color = '#00FF00'
+      break
+    case 5:
+      document.getElementById(`Button${id}`).style.color = '#0000FF'
+      break
+    case 6:
+      document.getElementById(`Button${id}`).style.color = '#4B0082'
+      break
+    case 7:
+      document.getElementById(`Button${id}`).style.color = '#9400D3'
+      break
+    case 8:
+      document.getElementById(`Button${id}`).style.color = '#DDA520'
+      break
+    default:
+      document.getElementById(`Button${id}`).style.backgroundColor =
+        'rgba(0,0,0,0.4)'
+      break
+  }
 }
 
 function isBomb(id) {
