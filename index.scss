@@ -3,17 +3,118 @@
   margin: 0;
   box-sizing: border-box;
 }
-.root {
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #6950e5;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  color: white;
+  font-size: 5rem;
+}
+
+.container {
+  border: #4227c9 10px solid;
+  border-radius: 30px;
+  margin-top: 2rem;
+}
+
+//Game render
+#game {
   position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+
   .line {
     position: relative;
     display: flex;
+
+    &:nth-child(even) {
+      .noBomb {
+        &:nth-child(even) {
+          background-color: #e5c29f;
+        }
+        &:nth-child(odd) {
+          background-color: #d7b899;
+        }
+      }
+      button {
+        &:nth-child(even) {
+          background-color: #a7d948;
+        }
+        &:nth-child(odd) {
+          background-color: #8ecc39;
+        }
+      }
+    }
+    &:nth-child(odd) {
+      .noBomb {
+        &:nth-child(odd) {
+          background-color: #e5c29f;
+        }
+        &:nth-child(even) {
+          background-color: #d7b899;
+        }
+      }
+      button {
+        &:nth-child(odd) {
+          background-color: #a7d948;
+        }
+        &:nth-child(even) {
+          background-color: #8ecc39;
+        }
+      }
+    }
   }
+
+  //Game logic
   button {
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     position: relative;
     background-color: #f2f2f2;
-    border: 1px solid rgba(0, 0, 0, 0.4);
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 500;
   }
+  .bomb {
+    &::after {
+      content: '🚩';
+    }
+  }
+}
+
+//Numbers
+
+.one {
+  color: blue;
+}
+.two {
+  color: green;
+}
+.three {
+  color: red;
+}
+.four {
+  color: purple;
+}
+.five {
+  color: black;
+}
+.six {
+  color: gray;
+}
+.seven {
+  color: maroon;
+}
+.eight {
+  color: turquoise;
 }
